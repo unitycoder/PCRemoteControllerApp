@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c686e8fbcc69fe345bbe85fd446a0c2c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/Resources/Main Camera Profile.asset
+  uploadId: 822070

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cebc569d664255647af4286720df6a9c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Common/MipMapBlur.asset
+  uploadId: 822070

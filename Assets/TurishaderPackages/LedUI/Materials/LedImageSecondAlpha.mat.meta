@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7a069c2db21f09149ae13913ec08965b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Materials/LedImageSecondAlpha.mat
+  uploadId: 822070

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 904bcc85acdb49843a2464fe8d853ec5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Common/MipMapBlurInverted.asset
+  uploadId: 822070

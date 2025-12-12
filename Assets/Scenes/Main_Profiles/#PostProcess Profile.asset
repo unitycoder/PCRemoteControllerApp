@@ -1,0 +1,359 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8091747764028700472
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8200aeb24375e6240ba17100e14ef138, type: 3}
+  m_Name: ScreenSpaceHighlightEdgeOnlyOffset
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  streakTexture:
+    overrideState: 1
+    value: {fileID: 2800000, guid: 19660be82e5f69c458de27b51cd7c1b3, type: 3}
+    defaultState: 1
+  edgeThreshold:
+    overrideState: 1
+    value: 0.175
+  edgeSensitivity:
+    overrideState: 1
+    value: 0.001
+  minLuminosityDifference:
+    overrideState: 1
+    value: 0
+  edgeThickness:
+    overrideState: 1
+    value: 0.0016
+  edgeSharpness:
+    overrideState: 1
+    value: 1
+  useColorInclusion:
+    overrideState: 1
+    value: 1
+  includeColor:
+    overrideState: 1
+    value: {r: 0.8078432, g: 0.8980393, b: 0.7960785, a: 1}
+  colorTolerance:
+    overrideState: 1
+    value: 0.21
+  highlightIntensity:
+    overrideState: 1
+    value: 50
+  streakColor:
+    overrideState: 1
+    value: {r: 1, g: 1, b: 1, a: 1}
+  emissionBoost:
+    overrideState: 1
+    value: 21
+  streakOffset:
+    overrideState: 1
+    value: {x: 0, y: 0.02}
+  animateStreak:
+    overrideState: 0
+    value: 1
+  animationSpeed:
+    overrideState: 1
+    value: {x: 0.015, y: 0}
+--- !u!114 &-6997726836766069374
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd2566fefde8a846b8b335b270127f8, type: 3}
+  m_Name: ScreenSpaceHighlight
+  m_EditorClassIdentifier: 
+  active: 0
+  enabled:
+    overrideState: 1
+    value: 0
+  streakTexture:
+    overrideState: 1
+    value: {fileID: 2800000, guid: 83098af86a2c612428c78986ccada3d9, type: 3}
+    defaultState: 1
+  brightnessThreshold:
+    overrideState: 1
+    value: 0.368
+  useColorMask:
+    overrideState: 1
+    value: 1
+  colorMask:
+    overrideState: 1
+    value: {r: 0.08235294, g: 0.08235294, b: 0.08235294, a: 1}
+  colorTolerance:
+    overrideState: 1
+    value: 1
+  highlightIntensity:
+    overrideState: 1
+    value: 50
+  streakColor:
+    overrideState: 0
+    value: {r: 1, g: 1, b: 1, a: 1}
+  emissionBoost:
+    overrideState: 1
+    value: 43.1
+  streakOffset:
+    overrideState: 0
+    value: -1
+  edgeThickness:
+    overrideState: 1
+    value: 0.0047
+  animateStreak:
+    overrideState: 1
+    value: 1
+  animationSpeed:
+    overrideState: 1
+    value: 0.01
+--- !u!114 &-4447869612656167494
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd2566fefde8a846b8b335b270127f8, type: 3}
+  m_Name: ScreenSpaceHighlight
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 0
+  streakTexture:
+    overrideState: 0
+    value: {fileID: 0}
+    defaultState: 1
+  brightnessThreshold:
+    overrideState: 0
+    value: 0.8
+  useColorMask:
+    overrideState: 0
+    value: 0
+  colorMask:
+    overrideState: 0
+    value: {r: 1, g: 1, b: 1, a: 1}
+  colorTolerance:
+    overrideState: 0
+    value: 0.2
+  highlightIntensity:
+    overrideState: 0
+    value: 1.5
+  streakColor:
+    overrideState: 0
+    value: {r: 1, g: 1, b: 1, a: 1}
+  emissionBoost:
+    overrideState: 0
+    value: 0
+  streakOffset:
+    overrideState: 0
+    value: 0
+  edgeThickness:
+    overrideState: 0
+    value: 0.01
+  animateStreak:
+    overrideState: 0
+    value: 0
+  animationSpeed:
+    overrideState: 0
+    value: 0.5
+--- !u!114 &-607742508463490760
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  spectralLut:
+    overrideState: 1
+    value: {fileID: 2800000, guid: 617373d702785d14bace2c091d22d00d, type: 3}
+    defaultState: 1
+  intensity:
+    overrideState: 1
+    value: 0.03
+  fastMode:
+    overrideState: 1
+    value: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
+  m_Name: '#PostProcess Profile'
+  m_EditorClassIdentifier: 
+  settings:
+  - {fileID: -607742508463490760}
+  - {fileID: 169906672351980805}
+  - {fileID: -6997726836766069374}
+  - {fileID: 6745270662636981664}
+  - {fileID: -8091747764028700472}
+  - {fileID: 8894223633646753946}
+--- !u!114 &169906672351980805
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 0
+  mode:
+    overrideState: 1
+    value: 0
+  color:
+    overrideState: 1
+    value: {r: 0.466, g: 0.466, b: 0.466, a: 1}
+  center:
+    overrideState: 0
+    value: {x: 0.5, y: 0.5}
+  intensity:
+    overrideState: 1
+    value: 0.652
+  smoothness:
+    overrideState: 0
+    value: 0.01
+  roundness:
+    overrideState: 1
+    value: 0
+  rounded:
+    overrideState: 0
+    value: 0
+  mask:
+    overrideState: 0
+    value: {fileID: 0}
+    defaultState: 1
+  opacity:
+    overrideState: 0
+    value: 1
+--- !u!114 &6745270662636981664
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6895c044e79629d41943d06e3b1ce83d, type: 3}
+  m_Name: ScreenSpaceHighlightEdgeOnly
+  m_EditorClassIdentifier: 
+  active: 0
+  enabled:
+    overrideState: 1
+    value: 0
+  streakTexture:
+    overrideState: 1
+    value: {fileID: 2800000, guid: 83098af86a2c612428c78986ccada3d9, type: 3}
+    defaultState: 1
+  edgeThreshold:
+    overrideState: 1
+    value: 0.084
+  edgeSensitivity:
+    overrideState: 1
+    value: 0.643
+  minLuminosityDifference:
+    overrideState: 1
+    value: 0
+  edgeThickness:
+    overrideState: 1
+    value: 0.05
+  edgeSharpness:
+    overrideState: 0
+    value: 2.54
+  highlightIntensity:
+    overrideState: 1
+    value: 3.6
+  streakColor:
+    overrideState: 1
+    value: {r: 0.148, g: 0.148, b: 0.148, a: 1}
+  emissionBoost:
+    overrideState: 1
+    value: 1000
+  streakOffset:
+    overrideState: 0
+    value: 0
+  animateStreak:
+    overrideState: 0
+    value: 0
+  animationSpeed:
+    overrideState: 0
+    value: 0.025
+--- !u!114 &8894223633646753946
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  intensity:
+    overrideState: 1
+    value: 0.6
+  threshold:
+    overrideState: 1
+    value: 1
+  softKnee:
+    overrideState: 0
+    value: 0.5
+  clamp:
+    overrideState: 0
+    value: 65472
+  diffusion:
+    overrideState: 0
+    value: 7
+  anamorphicRatio:
+    overrideState: 1
+    value: -0.34
+  color:
+    overrideState: 0
+    value: {r: 1, g: 1, b: 1, a: 1}
+  fastMode:
+    overrideState: 1
+    value: 1
+  dirtTexture:
+    overrideState: 1
+    value: {fileID: 2800000, guid: 02745b4f6a2160d48a27fb93b7cfe700, type: 3}
+    defaultState: 1
+  dirtIntensity:
+    overrideState: 1
+    value: 32

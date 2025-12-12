@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 33aaecdf20a53d74f93b92095f9b4c6c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/ThirdPartyResources/LED text main.asset
+  uploadId: 822070

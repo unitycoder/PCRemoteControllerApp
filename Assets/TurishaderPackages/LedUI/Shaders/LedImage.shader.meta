@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7af8772c36127414e85f95fb8be2a7c9
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Shaders/LedImage.shader
+  uploadId: 822070

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6794065c67baff74ea6223b2861d874e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Materials/LedImage.mat
+  uploadId: 822070

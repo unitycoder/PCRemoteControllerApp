@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5bdbdcc6a54cfa54e96739847f86853c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 345884
+  packageName: LED UI VFX
+  packageVersion: 1.0
+  assetPath: Assets/TurishaderPackages/LedUI/Shaders/LedText.shader
+  uploadId: 822070
