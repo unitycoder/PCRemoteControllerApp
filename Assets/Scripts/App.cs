@@ -50,7 +50,7 @@ public class App : MonoBehaviour
 
     private IEnumerator LedBlinkCoroutine()
     {
-        powerLed.color = powerLedTransmitColor;
+        powerLed.color = remoteClient.IsConnected ? powerLedTransmitColor : powerLedOffColor*1.2f;
         yield return new WaitForSeconds(0.16f);
         powerLed.color = remoteClient.IsConnected ? powerLedOnColor : powerLedOffColor;
     }
