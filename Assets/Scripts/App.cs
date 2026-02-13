@@ -38,8 +38,7 @@ public class App : MonoBehaviour
             Destroy(gameObject);
         }
 
-        powerLed.color = remoteClient.IsConnected ? powerLedOnColor : powerLedOffColor;
-
+        //powerLed.color = remoteClient.IsConnected ? powerLedOnColor : powerLedOffColor;
     }
 
     public void SendCommand(string cmd)
@@ -50,8 +49,18 @@ public class App : MonoBehaviour
 
     private IEnumerator LedBlinkCoroutine()
     {
-        powerLed.color = remoteClient.IsConnected ? powerLedTransmitColor : powerLedOffColor*1.2f;
+        powerLed.color = remoteClient.IsConnected ? powerLedTransmitColor : powerLedOffColor * 1.2f;
         yield return new WaitForSeconds(0.16f);
         powerLed.color = remoteClient.IsConnected ? powerLedOnColor : powerLedOffColor;
+    }
+
+    public void OnConnectedToServer()
+    {
+        powerLed.color = powerLedOnColor;
+    }
+
+    public void OnDisconnectedFromServer()
+    {
+        powerLed.color = powerLedOffColor;
     }
 }

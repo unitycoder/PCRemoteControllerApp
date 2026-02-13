@@ -13,5 +13,9 @@ public enum KeyCommand
     media_play_pause,
     media_next,
     media_prev,
-    alt_tab
+    shift_comma,
+    shift_period,
+    alt_tab,
+    f,
+    m
 }

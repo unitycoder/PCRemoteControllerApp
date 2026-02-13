@@ -30,7 +30,7 @@ public class TextScroller : MonoBehaviour
         var parentRect = rectTransform.parent.GetComponent<RectTransform>();
         MaxX = parentRect.rect.width + 32;
 
-        Debug.Log("Screen width: " + screenWidth + ", MinX: " + MinX + ", MaxX: " + MaxX + " rectTransform.rect.width: " + rectTransform.rect.width + " parentRect.rect.width:" + parentRect.rect.width);
+        //Debug.Log("Screen width: " + screenWidth + ", MinX: " + MinX + ", MaxX: " + MaxX + " rectTransform.rect.width: " + rectTransform.rect.width + " parentRect.rect.width:" + parentRect.rect.width);
     }
 
     private void Update()
