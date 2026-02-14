@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using UnityEngine;
@@ -8,10 +9,14 @@ using WebSocketSharp;
 public class PCRemoteClient : MonoBehaviour
 {
     [Header("WebSocket Settings")]
-    [Tooltip("Example: ws://192.168.1.188:8081/remote")]
-    public string serverUrl = "ws://192.168.1.188:8081/remote";
+    [Tooltip("Example: ws://192.168.1.100:8080/remote")]
+    public string serverUrl = "ws://192.168.1.100:8080/remote";
     public bool usePinCode = false;
     public string pinCode = "123456";
+
+    const string defaultIPAddress = "192.168.1.100";
+    const string defaultPort = "8080";
+    const string websocketPath = "/remote";
 
     [Tooltip("Connect automatically in Start()")]
     public bool connectOnStart = true;
@@ -57,6 +62,7 @@ public class PCRemoteClient : MonoBehaviour
 
     private void Start()
     {
+        LoadSettings();
         if (connectOnStart)
         {
             Connect();
@@ -88,6 +94,9 @@ public class PCRemoteClient : MonoBehaviour
 
         StopReconnect();
         intentionalDisconnect = false;
+
+        // Load latest settings in case user changed them
+        LoadSettings();
 
         // Clean up any leftover instance from a previous session
         if (ws != null)
@@ -375,11 +384,35 @@ public class PCRemoteClient : MonoBehaviour
 
         reconnectCoroutine = null;
     }
+
+    private void LoadSettings()
+    {
+        string savedIP = PlayerPrefs.GetString("IPAddress", "");
+        string savedPort = PlayerPrefs.GetString("Port", "");
+        string savedPinCode = PlayerPrefs.GetString("PinCode", "");
+
+        string ip = string.IsNullOrEmpty(savedIP) ? defaultIPAddress : savedIP;
+        string port = string.IsNullOrEmpty(savedPort) ? defaultPort : savedPort;
+
+        serverUrl = "ws://" + ip + ":" + port + websocketPath;
+
+        if (!string.IsNullOrEmpty(savedPinCode))
+        {
+            usePinCode = true;
+            pinCode = savedPinCode;
+        }
+        else
+        {
+            usePinCode = false;
+            pinCode = "";
+        }
+
+        Log("Settings loaded. URL: " + serverUrl + " PinCode: " + (usePinCode ? "set" : "not set"));
+    }
+
+    internal void Reconnect()
+    {
+        Disconnect();
+        Connect();
+    }
 }
-
-
-
-
-
-
-
