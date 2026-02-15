@@ -2117,6 +2117,7 @@ MonoBehaviour:
   highlightPinCodeBorder: {fileID: 1814710409}
   highlightPortBorder: {fileID: 1329701942}
   highlightIPBorder: {fileID: 3077143}
+  remoteClient: {fileID: 1300322335}
 --- !u!82 &322904110
 AudioSource:
   m_ObjectHideFlags: 0

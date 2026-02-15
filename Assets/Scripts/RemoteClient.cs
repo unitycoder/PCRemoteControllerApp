@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -25,6 +27,9 @@ public class PCRemoteClient : MonoBehaviour
     [Tooltip("Automatically reconnect when disconnected unexpectedly")]
     public bool autoReconnect = true;
 
+    [Tooltip("Maximum number of reconnection attempts before giving up (0 = unlimited)")]
+    public int maxReconnectAttempts = 2;
+
     [Tooltip("Initial delay before first reconnection attempt (seconds)")]
     public float reconnectDelay = 2f;
 
@@ -48,12 +53,18 @@ public class PCRemoteClient : MonoBehaviour
     public UnityEvent onConnected;
     public UnityEvent onDisconnected;
     public UnityEvent onError;
+    public UnityEvent onReconnectFailed;
 
 
     private WebSocket ws;
     private readonly ConcurrentQueue<System.Action> mainThreadActions = new ConcurrentQueue<System.Action>();
+    private readonly object wsLock = new object();
     private bool intentionalDisconnect;
     private Coroutine reconnectCoroutine;
+    private int reconnectAttemptCount;
+    private CancellationTokenSource connectCts;
+    private volatile bool isConnecting;
+    private int connectionGeneration;
 
     public bool IsConnected
     {
@@ -81,11 +92,20 @@ public class PCRemoteClient : MonoBehaviour
     private void OnDestroy()
     {
         StopReconnect();
+        connectCts?.Cancel();
+        connectCts?.Dispose();
+        connectCts = null;
         Disconnect();
     }
 
     public void Connect()
     {
+        if (isConnecting)
+        {
+            Log("Already connecting.");
+            return;
+        }
+
         if (ws != null && (ws.ReadyState == WebSocketState.Open || ws.ReadyState == WebSocketState.Connecting))
         {
             Log("Already connected or connecting.");
@@ -95,70 +115,119 @@ public class PCRemoteClient : MonoBehaviour
         StopReconnect();
         intentionalDisconnect = false;
 
-        // Load latest settings in case user changed them
         LoadSettings();
 
-        // Clean up any leftover instance from a previous session
-        if (ws != null)
-        {
-            try
-            {
-                ws.Close();
-            }
-            catch
-            {
-                // Ignore errors during cleanup of stale connection
-            }
-            ws = null;
-        }
+        connectCts?.Cancel();
+        connectCts?.Dispose();
+        connectCts = new CancellationTokenSource();
+
+        CleanupWebSocket();
 
         Log("Connecting to " + serverUrl + " ...");
-        ws = new WebSocket(serverUrl);
 
-        ws.OnOpen += (sender, e) =>
-        {
-            mainThreadActions.Enqueue(() =>
-            {
-                StopReconnect();
-                onConnected?.Invoke();
-                UpdateStatusLabel();
-                Log("Connected.");
-            });
-        };
+        var token = connectCts.Token;
+        isConnecting = true;
+        var myGeneration = Interlocked.Increment(ref connectionGeneration);
 
-        ws.OnClose += (sender, e) =>
+        Task.Run(() =>
         {
-            mainThreadActions.Enqueue(() =>
+            if (token.IsCancellationRequested) return;
+
+            WebSocket newWs = null;
+            try
             {
-                onDisconnected?.Invoke();
-                UpdateStatusLabel();
-                Log("Disconnected. Code: " + e.Code + " Reason: " + e.Reason);
-                if (!intentionalDisconnect && autoReconnect)
+                newWs = new WebSocket(serverUrl);
+
+                newWs.OnOpen += (sender, e) =>
                 {
-                    StartReconnect();
+                    if (myGeneration != Volatile.Read(ref connectionGeneration)) return;
+
+                    if (usePinCode && !string.IsNullOrEmpty(pinCode))
+                    {
+                        Log("Sending pin code for authentication...");
+                        try { newWs.Send(pinCode); } catch { }
+                    }
+
+                    mainThreadActions.Enqueue(() =>
+                    {
+                        if (myGeneration != connectionGeneration) return;
+                        isConnecting = false;
+                        StopReconnect();
+                        onConnected?.Invoke();
+                        UpdateStatusLabel();
+                        Log("Connected.");
+                    });
+                };
+
+                newWs.OnClose += (sender, e) =>
+                {
+                    if (myGeneration != Volatile.Read(ref connectionGeneration)) return;
+
+                    mainThreadActions.Enqueue(() =>
+                    {
+                        if (myGeneration != connectionGeneration) return;
+                        isConnecting = false;
+                        onDisconnected?.Invoke();
+                        UpdateStatusLabel();
+                        Log("Disconnected. Code: " + e.Code + " Reason: " + e.Reason);
+                        if (!intentionalDisconnect && autoReconnect)
+                        {
+                            StartReconnect();
+                        }
+                    });
+                };
+
+                newWs.OnError += (sender, e) =>
+                {
+                    if (myGeneration != Volatile.Read(ref connectionGeneration)) return;
+
+                    mainThreadActions.Enqueue(() =>
+                    {
+                        if (myGeneration != connectionGeneration) return;
+                        isConnecting = false;
+                        onError?.Invoke();
+                        Log("Error: " + e.Message);
+                    });
+                };
+
+                newWs.OnMessage += (sender, e) =>
+                {
+                    if (myGeneration != Volatile.Read(ref connectionGeneration)) return;
+
+                    mainThreadActions.Enqueue(() =>
+                    {
+                        if (myGeneration != connectionGeneration) return;
+                        Log("Server: " + e.Data);
+                    });
+                };
+
+                lock (wsLock)
+                {
+                    if (token.IsCancellationRequested || myGeneration != connectionGeneration)
+                    {
+                        try { newWs.Close(); } catch { }
+                        return;
+                    }
+                    ws = newWs;
                 }
-            });
-        };
 
-        ws.OnError += (sender, e) =>
-        {
-            mainThreadActions.Enqueue(() =>
+                newWs.ConnectAsync();
+
+                mainThreadActions.Enqueue(UpdateStatusLabel);
+            }
+            catch (Exception ex)
             {
-                onError?.Invoke();
-                Log("Error: " + e.Message);
-            });
-        };
-
-        ws.OnMessage += (sender, e) =>
-        {
-            mainThreadActions.Enqueue(() =>
-            {
-                Log("Server: " + e.Data);
-            });
-        };
-
-        ws.ConnectAsync();
-        UpdateStatusLabel();
+                try { newWs?.Close(); } catch { }
+                mainThreadActions.Enqueue(() =>
+                {
+                    if (myGeneration != connectionGeneration) return;
+                    isConnecting = false;
+                    onError?.Invoke();
+                    UpdateStatusLabel();
+                    Log("Error: " + ex.Message);
+                });
+            }
+        }, token);
     }
 
     public void Disconnect()
@@ -166,21 +235,68 @@ public class PCRemoteClient : MonoBehaviour
         intentionalDisconnect = true;
         StopReconnect();
 
-        if (ws == null)
+        // capture current socket before invalidating generation so we can
+        // reliably close it and still report a local "disconnected" state.
+        WebSocket toClose = null;
+        lock (wsLock)
         {
-            return;
-        }
-
-        if (ws.ReadyState == WebSocketState.Closing || ws.ReadyState == WebSocketState.Closed)
-        {
+            toClose = ws;
             ws = null;
+        }
+
+        // mark any existing connect attempt / callbacks as stale
+        Interlocked.Increment(ref connectionGeneration);
+        isConnecting = false;
+
+        connectCts?.Cancel();
+
+        // Always notify locally that we are disconnected (OnClose may be ignored
+        // because of generation mismatch during intentional disconnect).
+        mainThreadActions.Enqueue(() =>
+        {
+            onDisconnected?.Invoke();
+            UpdateStatusLabel();
+            Log("Disconnected.");
+        });
+
+        if (toClose == null)
+        {
             return;
         }
 
-        Log("Closing connection...");
-        ws.Close(CloseStatusCode.Normal, "Client disconnecting");
-        ws = null;
-        UpdateStatusLabel();
+        Task.Run(() =>
+        {
+            try
+            {
+                if (toClose.ReadyState != WebSocketState.Closing && toClose.ReadyState != WebSocketState.Closed)
+                {
+                    Log("Closing connection...");
+                    toClose.Close(CloseStatusCode.Normal, "Client disconnecting");
+                }
+            }
+            catch { }
+            finally
+            {
+                mainThreadActions.Enqueue(UpdateStatusLabel);
+            }
+        });
+    }
+
+    private void CleanupWebSocket()
+    {
+        WebSocket old;
+        lock (wsLock)
+        {
+            old = ws;
+            ws = null;
+        }
+
+        if (old == null) return;
+
+        Task.Run(() =>
+        {
+            try { old.Close(); } catch { }
+        });
     }
 
     public void SendCommand(string cmd)
@@ -208,7 +324,8 @@ public class PCRemoteClient : MonoBehaviour
             return;
         }
 
-        Debug.Log("[PCRemoteClient] " + msg);
+        // Debug.Log should be called from Unity main thread.
+        mainThreadActions.Enqueue(() => Debug.Log("[PCRemoteClient] " + msg));
     }
 
     private void UpdateStatusLabel()
@@ -352,10 +469,20 @@ public class PCRemoteClient : MonoBehaviour
     private IEnumerator ReconnectCoroutine()
     {
         float delay = reconnectDelay;
+        reconnectAttemptCount = 0;
 
         while (autoReconnect && !intentionalDisconnect)
         {
-            Log("Reconnecting in " + delay.ToString("F1") + "s ...");
+            reconnectAttemptCount++;
+
+            if (maxReconnectAttempts > 0 && reconnectAttemptCount > maxReconnectAttempts)
+            {
+                Log("Max reconnect attempts (" + maxReconnectAttempts + ") reached. Giving up.");
+                onReconnectFailed?.Invoke();
+                break;
+            }
+
+            Log("Reconnecting in " + delay.ToString("F1") + "s ... (attempt " + reconnectAttemptCount + "/" + maxReconnectAttempts + ")");
             yield return new WaitForSeconds(delay);
 
             if (intentionalDisconnect || !autoReconnect)
@@ -369,10 +496,15 @@ public class PCRemoteClient : MonoBehaviour
             }
 
             Log("Attempting reconnection...");
+
+            // Ensure previous instance is closed without blocking the main thread
+            CleanupWebSocket();
+
+            // Use the same Connect path (which runs connect off-thread)
             Connect();
 
             // Wait a moment to let ConnectAsync settle before checking
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
 
             if (ws != null && ws.ReadyState == WebSocketState.Open)
             {

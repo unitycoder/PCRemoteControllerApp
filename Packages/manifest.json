@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.dreamcode.mobile.android-keystore": "https://github.com/unitycoder/com.dreamcode.mobile.android-keystore.git",
     "com.endel.nativewebsocket": "https://github.com/endel/NativeWebSocket.git#upm",
     "com.llcheesell.led_screen_shader": "https://github.com/llcheesell/LEDScreenShader.git?path=/Assets/LEDScreenShader#develop",
     "com.unity.2d.psdimporter": "9.1.1",

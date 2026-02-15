@@ -206,7 +206,15 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         gameObject.SetActive(false);
 
+        remoteClient.onReconnectFailed.RemoveListener(OnReconnectFailed);
+        remoteClient.onReconnectFailed.AddListener(OnReconnectFailed);
         remoteClient.Reconnect();
+    }
+
+    private void OnReconnectFailed()
+    {
+        remoteClient.onReconnectFailed.RemoveListener(OnReconnectFailed);
+        gameObject.SetActive(true);
     }
 
 } // class

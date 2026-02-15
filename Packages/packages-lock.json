@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.dreamcode.mobile.android-keystore": {
+      "version": "https://github.com/unitycoder/com.dreamcode.mobile.android-keystore.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "bbdad626551ba4614d23a7a6a3228517269c9a50"
+    },
     "com.endel.nativewebsocket": {
       "version": "https://github.com/endel/NativeWebSocket.git#upm",
       "depth": 0,
